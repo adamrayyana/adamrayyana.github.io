@@ -1,6 +1,7 @@
 ---
 title: BuckeyeCTF 2025 - Pwn Writeups
 description: A collection of pwn writeups covering format strings, canary leaks, ret2libc, shellcode, chroot escapes, and heap exploitation.
+publishedAt: 2025-11-09
 tags:
   - CTF
   - pwn

@@ -9,8 +9,7 @@ import { withBase } from '../lib/urls';
 
 const posts = await getPosts();
 const tags = allTags(posts).sort((a, b) => b[1] - a[1]).slice(0, 6);
-const featured = posts.filter((post) => post.data.featured);
-const latest = (featured.length ? [...featured, ...posts.filter((post) => !post.data.featured)] : posts).slice(0, 5);
+const latest = posts.slice(0, 5);
 ---
 
 <BaseLayout>
