@@ -1,0 +1,45 @@
+---
+import { siteConfig } from '../config/site';
+import { withBase } from '../lib/urls';
+---
+
+<header class="site-header">
+  <div class="shell header-inner">
+    <a class="brand" href={withBase('/')} aria-label={`${siteConfig.name} home`}>
+      <span aria-hidden="true">~/kannrisha-notes</span>
+    </a>
+
+    <button class="nav-toggle icon-button" type="button" aria-expanded="false" aria-controls="site-nav">
+      <span aria-hidden="true">menu</span><span class="sr-only">Toggle navigation</span>
+    </button>
+
+    <nav id="site-nav" class="site-nav" aria-label="Primary navigation">
+      <a href={withBase('/posts/')}>posts</a>
+      <a href={withBase('/tags/')}>tags</a>
+      <a href={withBase('/about/')}>about</a>
+      <button class="nav-command" type="button" data-search-open aria-label="Open search">
+        <span>search</span><kbd>⌘ K</kbd>
+      </button>
+      <button class="theme-toggle icon-button" type="button" aria-label="Switch color theme" title="Switch color theme">
+      <span class="theme-icon" aria-hidden="true">[theme]</span>
+      </button>
+    </nav>
+  </div>
+</header>
+
+<script>
+  const navToggle = document.querySelector<HTMLButtonElement>('.nav-toggle');
+  const nav = document.querySelector<HTMLElement>('#site-nav');
+  navToggle?.addEventListener('click', () => {
+    const expanded = navToggle?.getAttribute('aria-expanded') === 'true';
+    navToggle?.setAttribute('aria-expanded', String(!expanded));
+    nav?.classList.toggle('is-open', !expanded);
+  });
+
+  document.querySelector('.theme-toggle')?.addEventListener('click', () => {
+    const root = document.documentElement;
+    const next = root.dataset.theme === 'dark' ? 'light' : 'dark';
+    root.dataset.theme = next;
+    localStorage.setItem('kannrisha-theme', next);
+  });
+</script>

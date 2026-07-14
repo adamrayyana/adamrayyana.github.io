@@ -1,0 +1,14 @@
+---
+import { siteConfig } from '../config/site';
+import { withBase } from '../lib/urls';
+---
+
+<footer class="site-footer">
+  <div class="shell footer-inner">
+    <div class="footer-links">
+      <a href={withBase('/rss.xml')}>RSS</a>
+      <a href={withBase('/sitemap-index.xml')}>Sitemap</a>
+      <span>© {new Date().getFullYear()} {siteConfig.name}</span>
+    </div>
+  </div>
+</footer>

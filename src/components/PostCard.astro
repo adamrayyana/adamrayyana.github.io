@@ -1,0 +1,30 @@
+---
+import type { Post } from '../lib/posts';
+import { postSlug, postStats, tagSlug } from '../lib/posts';
+import { withBase } from '../lib/urls';
+
+interface Props { post: Post; index?: number; }
+const { post, index = 0 } = Astro.props;
+const stats = postStats(post);
+const date = post.data.publishedAt;
+---
+
+<article class="post-card">
+  <div class="post-index" aria-hidden="true">{String(index + 1).padStart(2, '0')}</div>
+  <div>
+    <div class="post-meta">
+      {date && <time datetime={date.toISOString()}>{date.toLocaleDateString('en', { year: 'numeric', month: 'short', day: 'numeric' })}</time>}
+      {!date && <span>date: pending</span>}
+      <span>{stats.minutes} min read</span>
+      <span>{stats.words.toLocaleString()} words</span>
+    </div>
+    <h2><a href={withBase(`/posts/${postSlug(post)}/`)}>{post.data.title}</a></h2>
+    <p>{post.data.description}</p>
+    <div class="post-card-footer">
+      <ul class="tag-list" aria-label="Tags">
+        {post.data.tags.map((tag) => <li><a href={withBase(`/tag/${tagSlug(tag)}/`)}>#{tag}</a></li>)}
+      </ul>
+      <a class="read-link" href={withBase(`/posts/${postSlug(post)}/`)} aria-label={`Read ${post.data.title}`}>read<span aria-hidden="true"> ↗</span></a>
+    </div>
+  </div>
+</article>

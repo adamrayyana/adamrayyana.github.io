@@ -1,0 +1,96 @@
+---
+import { render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getPosts, postSlug, postStats, type Post } from '../../lib/posts';
+import { withBase } from '../../lib/urls';
+
+export async function getStaticPaths() {
+  const posts = await getPosts();
+  return posts.map((post) => ({ params: { slug: postSlug(post) }, props: { post } }));
+}
+
+interface Props { post: Post; }
+const { post } = Astro.props;
+const posts = await getPosts();
+const index = posts.findIndex((candidate) => candidate.id === post.id);
+const newer = index > 0 ? posts[index - 1] : undefined;
+const older = index < posts.length - 1 ? posts[index + 1] : undefined;
+const { Content, headings } = await render(post);
+const toc = headings.filter((heading) => heading.depth === 2 || heading.depth === 3);
+const stats = postStats(post);
+const date = post.data.publishedAt;
+---
+
+<BaseLayout title={post.data.title} description={post.data.description} type="article">
+  <article>
+    <header class="article-header">
+      <div class="article-header-inner">
+        <p class="eyebrow">Field note</p>
+        <h1 data-pagefind-meta="title">{post.data.title}</h1>
+        <p class="article-description" data-pagefind-meta="description">{post.data.description}</p>
+        <div class="article-meta">
+          {date ? <time datetime={date.toISOString()}>{date.toLocaleDateString('en', { year: 'numeric', month: 'long', day: 'numeric' })}</time> : <span>date: pending</span>}
+          <span>{stats.minutes} min read</span><span>{stats.words.toLocaleString()} words</span>
+          <span>{post.data.tags.map((tag) => `#${tag}`).join(' ')}</span>
+        </div>
+      </div>
+    </header>
+
+    <div class="article-layout">
+      <div class="article-content" data-pagefind-body>
+        {toc.length > 0 && <details class="mobile-toc"><summary>table of contents</summary><ol>{toc.map((heading) => <li><a href={`#${heading.slug}`}>{heading.text}</a></li>)}</ol></details>}
+        <Content />
+        <nav class="post-navigation" aria-label="Adjacent posts">
+          {newer ? <a href={withBase(`/posts/${postSlug(newer)}/`)}><small>← newer note</small><span>{newer.data.title}</span></a> : <span></span>}
+          {older && <a href={withBase(`/posts/${postSlug(older)}/`)}><small>older note →</small><span>{older.data.title}</span></a>}
+        </nav>
+      </div>
+      {toc.length > 0 && <aside class="toc" aria-label="Table of contents"><strong>on this page</strong><ol>{toc.map((heading) => <li data-depth={heading.depth}><a href={`#${heading.slug}`}>{heading.text}</a></li>)}</ol></aside>}
+    </div>
+  </article>
+</BaseLayout>
+
+<script>
+  document.querySelectorAll<HTMLElement>('.article-content h2[id], .article-content h3[id], .article-content h4[id]').forEach((heading) => {
+    const anchor = document.createElement('a');
+    anchor.href = `#${heading.id}`;
+    anchor.className = 'heading-anchor';
+    anchor.setAttribute('aria-label', `Link to ${heading.textContent ?? 'section'}`);
+    anchor.textContent = '#';
+    heading.prepend(anchor);
+  });
+
+  document.querySelectorAll<HTMLElement>('.article-content pre').forEach((pre) => {
+    const wrapper = document.createElement('div');
+    wrapper.className = 'code-wrap';
+    pre.parentNode?.insertBefore(wrapper, pre);
+    wrapper.appendChild(pre);
+    const code = pre.querySelector('code');
+    const language = pre.dataset.language
+      ?? [...(code?.classList ?? [])].find((name) => name.startsWith('language-'))?.replace('language-', '')
+      ?? 'output';
+    const label = document.createElement('span');
+    label.className = 'code-language';
+    label.textContent = language;
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'copy-code';
+    button.textContent = 'copy';
+    button.setAttribute('aria-label', `Copy ${language} code`);
+    button.addEventListener('click', async () => {
+      await navigator.clipboard.writeText(code?.textContent ?? '');
+      button.textContent = 'copied';
+      window.setTimeout(() => button.textContent = 'copy', 1400);
+    });
+    wrapper.append(label, button);
+  });
+
+  const tocLinks = [...document.querySelectorAll<HTMLAnchorElement>('.toc a')];
+  const observed = tocLinks.map((link) => document.querySelector<HTMLElement>(link.hash)).filter(Boolean) as HTMLElement[];
+  const observer = new IntersectionObserver((entries) => {
+    const active = entries.find((entry) => entry.isIntersecting);
+    if (!active) return;
+    tocLinks.forEach((link) => link.classList.toggle('is-active', link.hash === `#${active.target.id}`));
+  }, { rootMargin: '-20% 0px -72% 0px' });
+  observed.forEach((heading) => observer.observe(heading));
+</script>

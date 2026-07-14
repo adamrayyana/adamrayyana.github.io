@@ -1,0 +1,15 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PostCard from '../../components/PostCard.astro';
+import { getPosts } from '../../lib/posts';
+
+const posts = await getPosts();
+---
+
+<BaseLayout title="Post archive" description="Every published field note from Kannrisha, newest first.">
+  <header class="page-hero"><div class="shell"><p class="eyebrow">Archive</p><h1>Post archive</h1><p class="lede"></p></div></header>
+  <div class="shell section archive-grid">
+    <aside class="archive-aside">{posts.length} file{posts.length === 1 ? '' : 's'} found<br />sort: published desc<br />undated: last</aside>
+    <div class="post-list">{posts.map((post, index) => <PostCard post={post} index={index} />)}</div>
+  </div>
+</BaseLayout>

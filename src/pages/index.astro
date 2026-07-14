@@ -1,0 +1,57 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PostCard from '../components/PostCard.astro';
+import Logo from '../components/Logo.astro';
+import SocialLinks from '../components/SocialLinks.astro';
+import { siteConfig } from '../config/site';
+import { allTags, getPosts, tagSlug } from '../lib/posts';
+import { withBase } from '../lib/urls';
+
+const posts = await getPosts();
+const tags = allTags(posts).sort((a, b) => b[1] - a[1]).slice(0, 6);
+const featured = posts.filter((post) => post.data.featured);
+const latest = (featured.length ? [...featured, ...posts.filter((post) => !post.data.featured)] : posts).slice(0, 5);
+---
+
+<BaseLayout>
+  <section class="home-hero">
+    <div class="shell">
+      <div>
+        <Logo class="home-logo" label="Kannrisha logo" />
+        <h1>Hi, I'm <em>Kannrisha</em>.</h1>
+        <p class="hero-copy">{siteConfig.intro}</p>
+        <SocialLinks />
+        <div class="hero-actions">
+          <a href={withBase('/posts/')}>[posts]</a>
+          <a href={withBase('/about/')}>[about]</a>
+          <button type="button" data-search-open>[search]</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section home-posts" aria-label="Recent posts">
+    <div class="shell">
+      <div class="post-list">
+        {latest.map((post, index) => <PostCard post={post} index={index} />)}
+      </div>
+      <p class="archive-link"><a href={withBase('/posts/')}>view all posts →</a></p>
+    </div>
+  </section>
+
+  <!-- <section class="section">
+    <div class="shell">
+      <div class="section-heading">
+        <h2>Browse by tags</h2>
+        <a href={withBase('/tags/')}>all tags →</a>
+      </div>
+      <div class="topic-grid">
+        {tags.map(([tag, count]) => (
+          <a class="topic-card" href={withBase(`/tag/${tagSlug(tag)}/`)}>
+            <strong>#{tag}</strong><span>{count} matching note{count === 1 ? '' : 's'} →</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section> -->
+</BaseLayout>

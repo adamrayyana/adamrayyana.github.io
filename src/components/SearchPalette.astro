@@ -1,0 +1,98 @@
+---
+import { withBase } from '../lib/urls';
+---
+
+<dialog class="search-dialog" data-base={import.meta.env.BASE_URL} aria-labelledby="search-title">
+  <div class="search-window">
+    <header>
+      <span class="window-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+      <strong id="search-title">find ~/field-notes</strong>
+      <button type="button" data-search-close aria-label="Close search">esc</button>
+    </header>
+    <label class="search-input-wrap">
+      <span aria-hidden="true">›</span>
+      <span class="sr-only">Search the site</span>
+      <input type="search" autocomplete="off" placeholder="Search posts, tags, or snippets…" />
+    </label>
+    <p class="search-hint">Type at least two characters. Use <kbd>↑</kbd> <kbd>↓</kbd> to move and <kbd>enter</kbd> to open.</p>
+    <div class="search-results" aria-live="polite">
+      <div class="search-empty">The index wakes up after the first production build.</div>
+    </div>
+    <footer><span>Pagefind index</span><a href={withBase('/posts/')}>browse all posts →</a></footer>
+  </div>
+</dialog>
+
+<script>
+  const dialog = document.querySelector<HTMLDialogElement>('.search-dialog');
+  const input = dialog?.querySelector<HTMLInputElement>('input[type="search"]');
+  const results = dialog?.querySelector<HTMLElement>('.search-results');
+  let pagefind: any;
+  let selectedIndex = -1;
+
+  const openSearch = () => {
+    dialog?.showModal();
+    requestAnimationFrame(() => input?.focus());
+  };
+
+  document.querySelectorAll('[data-search-open]').forEach((button) => button.addEventListener('click', openSearch));
+  dialog?.querySelector('[data-search-close]')?.addEventListener('click', () => dialog?.close());
+  dialog?.addEventListener('click', (event) => {
+    if (event.target === dialog) dialog?.close();
+  });
+
+  document.addEventListener('keydown', (event) => {
+    const target = event.target as HTMLElement;
+    const isTyping = /INPUT|TEXTAREA|SELECT/.test(target.tagName) || target.isContentEditable;
+    if ((event.key === '/' && !isTyping) || ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'k')) {
+      event.preventDefault();
+      openSearch();
+    }
+  });
+
+  input?.addEventListener('input', async () => {
+    const query = input?.value.trim() ?? '';
+    selectedIndex = -1;
+    if (!results) return;
+    if (query.length < 2) {
+      results.innerHTML = '<div class="search-empty">Keep typing—two characters is enough.</div>';
+      return;
+    }
+
+    results.innerHTML = '<div class="search-empty">Searching the stack…</div>';
+    try {
+      if (!pagefind) {
+        const base = dialog?.dataset.base ?? '/';
+        pagefind = await import(/* @vite-ignore */ `${base}pagefind/pagefind.js`);
+        await pagefind.init();
+      }
+      const response = await pagefind.search(query);
+      const items = await Promise.all(response.results.slice(0, 8).map((result: any) => result.data()));
+      if (!items.length) {
+        results.innerHTML = `<div class="search-empty">No trace found for “${escapeHtml(query)}”.</div>`;
+        return;
+      }
+      results.innerHTML = items.map((item: any, index: number) => `
+        <a class="search-result" data-result-index="${index}" href="${item.url}">
+          <strong>${item.meta?.title ?? 'Untitled'}</strong>
+          <span>${item.excerpt ?? ''}</span>
+        </a>`).join('');
+    } catch {
+      results.innerHTML = '<div class="search-empty">Search is available in the production preview after a build.</div>';
+    }
+  });
+
+  input?.addEventListener('keydown', (event) => {
+    const links = [...(results?.querySelectorAll<HTMLAnchorElement>('.search-result') ?? [])];
+    if (!links.length || !['ArrowDown', 'ArrowUp', 'Enter'].includes(event.key)) return;
+    event.preventDefault();
+    if (event.key === 'Enter' && selectedIndex >= 0) return links[selectedIndex].click();
+    selectedIndex = event.key === 'ArrowDown'
+      ? (selectedIndex + 1) % links.length
+      : (selectedIndex - 1 + links.length) % links.length;
+    links.forEach((link, index) => link.classList.toggle('is-selected', index === selectedIndex));
+  });
+
+  function escapeHtml(value: string) {
+    return value.replace(/[&<>'"]/g, (character) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' })[character]!);
+  }
+</script>

@@ -1,0 +1,8 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { withBase } from '../lib/urls';
+---
+
+<BaseLayout title="Not found" description="The requested path does not exist.">
+  <div class="shell not-found"><div><strong>404</strong><h1>segmentation fault</h1><p>The pointer wandered outside the mapped notes.</p><a class="button primary" href={withBase('/')}>return home</a></div></div>
+</BaseLayout>

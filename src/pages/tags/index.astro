@@ -1,0 +1,16 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { allTags, getPosts, tagSlug } from '../../lib/posts';
+import { withBase } from '../../lib/urls';
+
+const tags = allTags(await getPosts());
+---
+
+<BaseLayout title="Tags" description="Browse Kannrisha's field notes by topic.">
+  <header class="page-hero"><div class="shell"><p class="eyebrow">Tags</p><h1>Topic index</h1><p class="lede"></p></div></header>
+  <div class="content-shell">
+    <div class="tag-cloud">
+      {tags.map(([tag, count]) => <a href={withBase(`/tag/${tagSlug(tag)}/`)}><strong>#{tag}</strong><span>{count}</span></a>)}
+    </div>
+  </div>
+</BaseLayout>

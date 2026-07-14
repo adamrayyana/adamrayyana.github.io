@@ -1,0 +1,12 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { withBase } from '../lib/urls';
+---
+
+<BaseLayout title="Search" description="Search Kannrisha's field notes.">
+  <header class="page-hero"><div class="shell"><p class="eyebrow">Search</p><h1>Search the notes</h1><p class="lede">Search titles, prose, code-adjacent explanations, and tags using the static index.</p></div></header>
+  <div class="content-shell">
+    <button class="button primary" type="button" data-search-open>open search palette <kbd>/</kbd></button>
+    <p style="color: var(--muted); margin-top: 24px">You can open this from anywhere with <kbd>Ctrl K</kbd>, <kbd>⌘ K</kbd>, or <kbd>/</kbd>. Prefer browsing? <a href={withBase('/posts/')}>Open the archive</a>.</p>
+  </div>
+</BaseLayout>
