@@ -4,8 +4,8 @@ import remarkDirective from 'remark-directive';
 import remarkGfm from 'remark-gfm';
 import { remarkHackmdCompat } from './src/lib/remark-hackmd-compat.mjs';
 
-const site = process.env.SITE_URL ?? 'https://kannrisha.github.io';
-const base = process.env.BASE_PATH ?? (process.env.NODE_ENV === 'production' ? '/kannrisha-website' : '/');
+const site = process.env.SITE_URL ?? 'https://adamrayyana.github.io';
+const base = process.env.BASE_PATH ?? '/';
 
 const terminalDark = {
   name: 'kannrisha-dark',

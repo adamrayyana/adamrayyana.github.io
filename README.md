@@ -36,4 +36,4 @@ HackMD-style `:::info` and `:::spoiler[label]` containers are supported, along w
 
 ## Deploy
 
-Push to `main`, enable **GitHub Actions** as the Pages source in the repository settings, and the included workflow will deploy the site at the repository subpath. For a custom domain, set `SITE_URL` to the domain, set `BASE_PATH` to `/`, and add `public/CNAME`.
+Push to `main`, enable **GitHub Actions** as the Pages source in the repository settings, and the included workflow will deploy the site at `https://adamrayyana.github.io/`. For a custom domain, set `SITE_URL` to the domain and add `public/CNAME`.
