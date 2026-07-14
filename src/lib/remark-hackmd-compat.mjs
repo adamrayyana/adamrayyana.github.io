@@ -35,6 +35,16 @@ export function remarkHackmdCompat() {
         });
       }
 
+      if (name === 'attachments') {
+        node.data.hName = 'aside';
+        node.data.hProperties = { className: ['callout', 'attachment-panel'], 'aria-label': 'Post attachments' };
+        node.children.unshift({
+          type: 'paragraph',
+          data: { hName: 'p', hProperties: { className: ['callout-label'] } },
+          children: [{ type: 'text', value: 'downloads' }]
+        });
+      }
+
       if (name === 'spoiler') {
         const label = node.label || node.attributes?.title || 'Show details';
         node.data.hName = 'details';

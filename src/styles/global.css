@@ -199,6 +199,9 @@ kbd { border: 1px solid var(--line); border-bottom-width: 2px; border-radius: 4p
 .callout { margin: 1.6em 0; padding: 18px 20px; border: 1px solid color-mix(in srgb, var(--pink), var(--line) 50%); border-left: 4px solid var(--pink); border-radius: 6px; background: var(--pink-soft); }
 .callout > :last-child { margin-bottom: 0; }
 .callout-label { margin: 0 0 8px !important; color: var(--pink-bright) !important; font: 700 10px/1.2 var(--mono); text-transform: uppercase; letter-spacing: .13em; }
+.attachment-panel ul { margin: 10px 0 0; padding-left: 20px; }
+.attachment-panel li { margin: 7px 0; }
+.attachment-panel a { font-weight: 700; }
 .spoiler { margin: 1.6em 0; border: 1px solid var(--line); border-radius: 7px; background: var(--bg-elevated); }
 .spoiler > summary { padding: 14px 17px; cursor: pointer; color: var(--pink-bright); font: 600 12px/1.4 var(--mono); }
 .spoiler[open] > summary { border-bottom: 1px solid var(--line); }

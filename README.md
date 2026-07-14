@@ -30,7 +30,18 @@ featured: false
 Start writing here.
 ```
 
-Images and downloadable files can live in the same folder as `index.md`. Omit `publishedAt` when the date is unknown. Set `draft: true` to keep a post out of production lists, search, feeds, and generated routes.
+Images can live beside the post's `index.md`. Omit `publishedAt` when the date is unknown. Set `draft: true` to keep a post out of production lists, search, feeds, and generated routes.
+
+Put downloadable challenge files in `public/attachments/<post-slug>/`. Link them from the article with an attachment panel:
+
+```md
+## Challenge Files
+
+:::attachments
+- [Download the challenge bundle](/attachments/my-post/challenge-files.zip)
+- [Challenge binary](/attachments/my-post/chall)
+:::
+```
 
 HackMD-style `:::info` and `:::spoiler[label]` containers are supported, along with fence labels such as `py=` and `cpp=`. Existing HackMD spoiler headings can be migrated by wrapping the label in brackets.
 
