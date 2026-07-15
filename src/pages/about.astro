@@ -1,12 +1,71 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { siteConfig } from '../config/site';
 ---
 
 <BaseLayout title="About" description="About Kannrisha and these field notes.">
-  <header class="page-hero"><div class="shell"><p class="eyebrow">About</p><h1>About me</h1><p class="lede"></p></div></header>
-  <div class="content-shell about-grid">
-  I'll get onto it hehe
+  <header class="page-hero">
+    <div class="shell">
+      <p class="eyebrow">About</p>
+      <h1>About me</h1>
+    </div>
+  </header>
 
+  <div class="content-shell about-simple">
+    <p class="about-intro">My name is Adam, often known online as <span>kannrisha</span>.</p>
+
+    <section class="dictionary-entry" aria-labelledby="kanrisha-entry">
+      <div class="dictionary-headword">
+        <h2 id="kanrisha-entry">
+          <ruby>管<rt>かん</rt>理<rt>り</rt>者<rt>しゃ</rt></ruby>
+        </h2>
+      </div>
+
+      <div class="dictionary-copy">
+        <p class="part-of-speech">Noun</p>
+        <div class="dictionary-definition">
+          <div>
+            <p class="definition-title"><strong>root (user)</strong> <span>Computing</span></p>
+            <p class="japanese-example" lang="ja">
+              <ruby>管理用画面<rt>かんりようがめん</rt></ruby>に<ruby>管理者<rt>かんりしゃ</rt></ruby>しかアクセスできないようにしました。
+            </p>
+            <p class="english-example">I made it so only root could access the administrative screen.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <p class="about-bio">
+      I am a CTF player from the Faculty of Computer Science, Universitas Indonesia. I usually participate in CTF competitions with my friends in uni, usually doing binary exploitation and reverse engineering. Currently, I am expanding my skills by learning web exploitation and other areas of cybersecurity, as well as fields beyond it :O
+    </p>
+
+    <section class="selected-ctfs" aria-labelledby="selected-ctfs-heading">
+      <h2 id="selected-ctfs-heading">Selected CTFs</h2>
+      <p class="ctf-intro">
+        Besides playing in local CTFs, I also compete internationally with <strong>CSUI / Universitas Indonesia</strong>. You can find our team on <a href="https://ctftime.org/team/70551" target="_blank" rel="noreferrer">CTFtime</a>.
+      </p>
+      <h3>International CTFs</h3>
+      <div class="ctf-table-wrap">
+        <table>
+          <thead><tr><th>Competition</th><th>Team</th><th>Position</th></tr></thead>
+          <tbody>
+            <tr><td>HackTheBox University CTF 2025</td><td>Universitas Indonesia</td><td>4th Place</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Local Indonesian CTFs</h3>
+      <div class="ctf-table-wrap">
+        <table>
+          <thead><tr><th>Competition</th><th>Team</th><th>Position</th></tr></thead>
+          <tbody>
+            <tr><td>FIT Competition CTF 2025</td><td>frontshots</td><td>1st Place</td></tr>
+            <tr><td>Techomfest CTF 2026</td><td>frontshots</td><td>1st Place</td></tr>
+            <tr><td>Netcomp CTF 4.0</td><td>frontshots</td><td>1st Place</td></tr>
+            <tr><td>GEMASTIK Cybersecurity Division (CTF)</td><td>ijazahnya mana woy</td><td>Best Defender</td></tr>
+            <tr><td>Schematics Capture The Flag ITS 2025</td><td>frontshots</td><td>3rd Place</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
   </div>
 </BaseLayout>

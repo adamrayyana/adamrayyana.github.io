@@ -1,12 +1,12 @@
 export const siteConfig = {
-  name: 'Kannrisha',
-  title: "Kannrisha's Notes",
-  description: 'CTF writeups, binary exploitation notes, and experiments from the edge of the stack.',
+  name: 'kannrisha',
+  title: "kannrisha",
+  description: 'A couple of notes from what I\'ve learned',
   handle: 'kannrisha',
   intro: 'I like breaking things. Here, I post stuff I learned while doing CTFs and other stuff.',
   about: {
     eyebrow: 'Profile data pending',
-    lead: 'This page is ready for the story behind Kannrisha.',
+    lead: 'This page is ready for the story behind kannrisha.',
     paragraphs: [
       'Replace this placeholder with a short introduction: what you study or build, how you got into security, and what readers can expect from these notes.',
       'You can also add a longer timeline, current interests, CTF team details, or contact preferences whenever you are ready.'
