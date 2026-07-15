@@ -1,4 +1,4 @@
-# Kannrisha's field notes
+# kannrisha
 
 A static Astro blog for CTF writeups, binary exploitation notes, and technical experiments.
 
@@ -8,8 +8,6 @@ A static Astro blog for CTF writeups, binary exploitation notes, and technical e
 npm install
 npm run dev
 ```
-
-Run `npm run check` for Astro and TypeScript diagnostics. `npm run build` creates the production site and its Pagefind search index in `dist/`.
 
 ## Add a post
 
